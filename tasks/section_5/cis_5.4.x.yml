@@ -65,6 +65,30 @@
 
       - name: |
            "5.4.3 | L1 | PATCH | Ensure password reuse is limited | Set system-auth remember remember settings
+        lineinfile:
+            dest: /etc/pam.d/system-auth
+            state: present
+            regexp: '^password    required                                   pam_pwhistory.so'
+            line: "password    required                                   pam_pwhistory.so try_first_pass local_users_only renforce-for-root retry=3 remember={{ rhel8cis_pam_faillock.remember }}"
+            insertafter: '^#?password ?'
+        when:
+            - rhel8cis_rule_5_4_3 or
+              rhel8cis_rule_5_4_4
+
+      - name: |
+           "5.4.3 | L1 | PATCH | Ensure password reuse is limited | Set system-auth remember remember settings
+        lineinfile:
+            dest: /etc/pam.d/password-auth
+            state: present
+            regexp: '^password    required                                   pam_pwhistory.so'
+            line: "password    required                                   pam_pwhistory.so try_first_pass local_users_only renforce-for-root retry=3 remember={{ rhel8cis_pam_faillock.remember }}"
+            insertafter: '^#?password ?'
+        when:
+            - rhel8cis_rule_5_4_3 or
+              rhel8cis_rule_5_4_4
+
+      - name: |
+           "5.4.3 | L1 | PATCH | Ensure password reuse is limited | Set system-auth remember remember settings
             5.4.4 | L1 | PATCH | Ensure password hashing algorithm is SHA-512 | Set system-auth pwhash settings"
         lineinfile:
             dest: /etc/pam.d/system-auth

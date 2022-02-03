@@ -3,3 +3,5 @@
 rhel8cis_allowed_crypto_policies:
     - 'FUTURE'
     - 'FIPS'
+    - 'LEGACY'
+    - 'DEFAULT'
